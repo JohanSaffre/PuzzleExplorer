@@ -24,24 +24,4 @@ public class GameManager : MonoBehaviour
         IsKeyCollected = true;
         Destroy(key);
     }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            OnDirectionPressed?.Invoke(0);
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            OnDirectionPressed?.Invoke(1);
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            OnDirectionPressed?.Invoke(2);
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            OnDirectionPressed?.Invoke(3);
-        }
-    }
 }

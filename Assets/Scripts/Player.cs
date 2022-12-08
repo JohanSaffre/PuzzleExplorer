@@ -6,14 +6,9 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     // [SerializeField] private float _shrinkTime = 1.0f;
-    [NonSerialized] private bool _canGoUp = true;
-    [NonSerialized] private bool _canGoDown = true;
-    [NonSerialized] private bool _canGoLeft = true;
-    [NonSerialized] private bool _canGoRight = true;
+    [SerializeField] private float _speed = 1.0f;
 
     private void Start() {
-        GameManager.OnDirectionPressed += Move;
-        SwipeController.OnDirectionSwiped += Move;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -34,94 +29,49 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        //on every frame, check if there is a wall on the corresponding side
-        //if so, set the corresponding bool to false
-        //if not, set the corresponding bool to true
-        RaycastHit2D hit2D = Physics2D.Raycast(transform.position, Vector3.down, 1.0f);
-
-        // _canGoDown = !Physics2D.Raycast(transform.position, Vector3.down, 1f, LayerMask.GetMask("Wall"));
-        Debug.Log(hit2D.transform.gameObject.tag);
+        Move();
     }
-
-    // private IEnumerator ShrinkAnimate()
-    // {
-    //     Vector3 originalScale = transform.localScale;
-    //     Vector3 destinationScale = (transform.localScale / 2f);
-
-    //     float currentTime = 0f;
-
-    //     while (currentTime <= _shrinkTime / 2)
-    //     {
-    //         currentTime += Time.deltaTime;
-    //         transform.localScale = Vector3.Lerp(originalScale, destinationScale, currentTime);
-    //         yield return null;
-    //     }
-    //     while(currentTime <= _shrinkTime)
-    //     {
-    //         currentTime += Time.deltaTime;
-    //         transform.localScale = Vector3.Lerp(destinationScale, originalScale, currentTime);
-    //         yield return null;
-    //     }
-    // }
-
-    // private IEnumerator MoveAnimate(Vector3 destination)
-    // {
-    //     Vector3 originalPosition = transform.position;
-    //     Vector3 destinationPosition = destination;
-
-    //     float currentTime = 0f;
-
-    //     while (currentTime <= _shrinkTime)
-    //     {
-    //         currentTime += Time.deltaTime;
-    //         transform.position = Vector3.Lerp(originalPosition, destinationPosition, currentTime);
-    //         yield return null;
-    //     }
-    // }
 
 #region Movement
 
-    public void Move(int direction)
-    {
-        switch (direction)
-        {
-            case 0:
-                MoveUp();
-                break;
-            case 1:
-                MoveDown();
-                break;
-            case 2:
-                MoveLeft();
-                break;
-            case 3:
-                MoveRight();
-                break;
-        }
-    }
-
     private void MoveUp()
     {
-        if (_canGoUp)
-            transform.position += Vector3.up;
+        this.transform.Translate(Vector3.up * Time.deltaTime * _speed);
     }
 
     private void MoveDown()
     {
-        if (_canGoDown)
-            transform.position += Vector3.down;
+        this.transform.Translate(Vector3.down * Time.deltaTime * _speed);
     }
 
     private void MoveLeft()
     {
-        if (_canGoLeft)
-            transform.position += Vector3.left;
+        this.transform.Translate(Vector3.left * Time.deltaTime * _speed);
     }
 
     private void MoveRight()
     {
-        if (_canGoRight)
-            transform.position += Vector3.right;
+        this.transform.Translate(Vector3.right * Time.deltaTime * _speed);
+    }
+
+    private void Move()
+    {
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            MoveUp();
+        }
+        else if (Input.GetKey(KeyCode.DownArrow))
+        {
+            MoveDown();
+        }
+        else if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            MoveLeft();
+        }
+        else if (Input.GetKey(KeyCode.RightArrow))
+        {
+            MoveRight();
+        }
     }
 
 #endregion
